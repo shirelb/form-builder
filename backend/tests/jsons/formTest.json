@@ -1,0 +1,17 @@
+{
+  "name": "Form test",
+  "fields": [
+    {
+      "id": "1",
+      "label": "label 1",
+      "type": "Text",
+      "visible": true
+    },
+    {
+      "id": "2",
+      "label": "label 2",
+      "type": "Text",
+      "visible": true
+    }
+  ]
+}

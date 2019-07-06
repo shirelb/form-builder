@@ -1,12 +1,35 @@
 const mongoose = require('mongoose');
+const {MongoMemoryServer} = require('mongodb-memory-server');
+const autoIncrement = require('mongoose-auto-increment');
 
-const dbRoute =
-    'mongodb+srv://adminUser:adminUser@formbuilder-xptgv.mongodb.net/test?retryWrites=true&w=majority';
+const mongoServer = new MongoMemoryServer();
 
-mongoose.connect(dbRoute, { useNewUrlParser: true });
+const connectToInMemoryDb = async () => {
+    const url = await mongoServer.getConnectionString();
+    return await mongoose.connect(url, {useNewUrlParser: true});
+};
 
-let db = mongoose.connection;
+const connectToCloudDb = async () => {
+    const dbRoute =
+        'mongodb+srv://adminUser:adminUser@formbuilder-xptgv.mongodb.net/test?retryWrites=true&w=majority';
 
-db.once('open', () => console.log('connected to the database'));
+    return await mongoose.connect(dbRoute, {useNewUrlParser: true});
+};
 
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+exports.setUpDB = () => {
+    const dbConnection = process.dbMode === 'inMemory' ? connectToInMemoryDb() : connectToCloudDb();
+
+    let db = mongoose.connection;
+
+    autoIncrement.initialize(db);
+
+    db.once('open', () => console.log('connected to the database'));
+
+    db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+};
+
+exports.disconnectDB = async () => {
+    await mongoose.disconnect();
+    await mongoServer.stop();
+};
