@@ -7,8 +7,9 @@ var logger = require('morgan');
 var cors = require('cors');
 
 var db = require('./db/setup');
+db.setUpDB();
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var formsRouter = require('./routes/forms');
 
 var server = express();
 server.use(cors());
@@ -28,8 +29,7 @@ server.use(express.static(path.join(__dirname, 'public')));
 
 server.use('/', indexRouter);
 server.use('/api/', indexRouter);
-server.use('/api/users', usersRouter);
-server.use('/api/forms', usersRouter);
+server.use('/api/forms', formsRouter);
 
 // catch 404 and forward to error handler
 server.use(function (req, res, next) {

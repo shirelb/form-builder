@@ -1,19 +1,23 @@
 const mongoose = require("mongoose");
+var autoIncrement = require('mongoose-auto-increment');
 const Schema = mongoose.Schema;
 
-const DataSchema = new Schema(
+const fieldSchema = new Schema(
     {
         id: Number,
-        name: String,
-        fields:[{
-            id: Number,
-            label:String,
-            type:String,
-            visible:Boolean,
-        }]
-    },
-    { timestamps: true }
+        label: String,
+        type: String,
+        visible: Boolean,
+    }
 );
 
-// export the new Schema so we could modify it using Node.js
-module.exports = mongoose.model("Form", DataSchema);
+const formSchema = new Schema(
+    {
+        name: String,
+        fields: [fieldSchema]
+    },
+    {timestamps: true}
+);
+
+formSchema.plugin(autoIncrement.plugin, {model: 'Form', field: 'id'});
+module.exports = mongoose.model("Form", formSchema);
