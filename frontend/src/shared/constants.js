@@ -1,6 +1,6 @@
 exports.pagesIconsNames = {
     formsList: "list",
-    formBuilder: "file",
+    formBuilder: "file alternate",
 };
 
 exports.titles = {

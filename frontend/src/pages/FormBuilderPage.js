@@ -32,7 +32,7 @@ export default class FormBuilderPage extends Component {
         let fields = form.fields;
         field.id = fields.length;
         fields.push(field);
-        this.setState({form: {...form, [fields]: fields}});
+        this.setState({form: form});
         this.toggleNewFieldModalVisible();
     };
 
@@ -93,7 +93,7 @@ export default class FormBuilderPage extends Component {
                                 (
                                     <Form.Field inline name={field.name} key={field.id}>
                                         <label>{field.label}</label>
-                                        <input placeholder={field.label} type={field.type}/>
+                                        <input placeholder={field.label} name={field.name} type={field.type} style={{width:200}}/>
                                         {/*<Icon name='edit' onClick={this.toggel}/>*/}
                                         {/*<Icon name='delete'/>*/}
                                     </Form.Field>

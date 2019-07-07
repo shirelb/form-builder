@@ -41,14 +41,10 @@ export default class MainPage extends Component {
                                 render={() => <Redirect to="/formsList"/>}
                             />
 
-                            <Button.Group>
-                                <Button disabled={visible} onClick={this.handleShowClick}>
-                                    Show sidebar
-                                </Button>
-                                <Button disabled={!visible} onClick={this.handleHideClick}>
-                                    Hide sidebar
-                                </Button>
-                            </Button.Group>
+                            <Button color='facebook' size='large' icon labelPosition='left' disabled={visible} onClick={this.handleShowClick}>
+                                <Icon name='bars'/>
+                                Menu
+                            </Button>
 
                             <Sidebar as={Menu} inverted onHide={this.handleSidebarHide}
                                      visible={visible} animation='push' width="thin" icon="labeled"
@@ -61,14 +57,6 @@ export default class MainPage extends Component {
                                     <Icon name={constants.pagesIconsNames["formBuilder"]}/>
                                     {constants.titles.FORM_BUILDER_PAGE_TITLE}
                                 </Menu.Item>
-                                <Menu.Item name="submitForm" as={NavLink} to="/submitForm">
-                                    <Icon name={constants.pagesIconsNames["submitForm"]}/>
-                                    {constants.titles.FORM_SUBMIT_PAGE_TITLE}
-                                </Menu.Item>
-                                <Menu.Item name="formSubmissions" as={NavLink} to="/formSubmissions">
-                                    <Icon name={constants.pagesIconsNames["formSubmissions"]}/>
-                                    {constants.titles.FORM_SUBMISSIONS_PAGE_TITLE}
-                                </Menu.Item>
                             </Sidebar>
 
                             <div style={styles.content}>
@@ -79,15 +67,11 @@ export default class MainPage extends Component {
                                         timeout={300}
                                     >
                                         <Switch location={location}>
-                                            {/*<Route exact path="/hsl/:h/:s/:l" component={HSL}/>*/}
-                                            {/*<Route exact path="/rgb/:r/:g/:b" component={RGB}/>*/}
-                                            {/* Without this `Route`, we would get errors during
-                    the initial transition from `/` to `/hsl/10/90/50`
-                                        */}
                                             <Route exec path={`/formsList`} component={FormsListPage}/>
                                             <Route exec path={`/formBuilder`} component={FormBuilderPage}/>
                                             <Route exec path={`/form/:formId/submit`} component={FormSubmitPage}/>
-                                            <Route exec path={`/form/:formId/submissions`} component={FormSubmissionsPage}/>
+                                            <Route exec path={`/form/:formId/submissions`}
+                                                   component={FormSubmissionsPage}/>
                                             {/*<Route component={PageNotFound}/>*/}
                                             <Route render={() => <div>Not Found</div>}/>
                                         </Switch>
