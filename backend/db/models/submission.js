@@ -5,20 +5,18 @@ const Schema = mongoose.Schema;
 const fieldSchema = new Schema(
     {
         id: Number,
-        label: String,
         name: String,
-        type: String,
-        visible: Boolean,
+        value:String,
     }
 );
 
-const formSchema = new Schema(
+const submissionSchema = new Schema(
     {
-        name: String,
+        formId: Number,
         fields: [fieldSchema]
     },
     {timestamps: true}
 );
 
-formSchema.plugin(autoIncrement.plugin, {model: 'Form', field: 'id'});
-module.exports = mongoose.model("Form", formSchema);
+submissionSchema.plugin(autoIncrement.plugin, {model: 'Submission', field: 'id'});
+module.exports = mongoose.model("Submission", submissionSchema);

@@ -24,10 +24,6 @@ router.post('/build', async function (req, res, next) {
     await formStorage.create(req, res);
 });
 
-router.post('/:formId/submit', function (req, res, next) {
-    res.send('respond with a resource');
-});
-
 router.delete('/:formId', async function (req, res, next) {
     await formStorage.delete(req, res);
 });
