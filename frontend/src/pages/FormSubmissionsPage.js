@@ -35,7 +35,7 @@ export default class FormSubmissionsPage extends Component {
                 <Container>
                     <Header as="h1">{constants.titles.FORM_SUBMISSIONS_PAGE_TITLE}</Header>
 
-                    <Table celled striped selectable sortable>
+                    <Table celled striped selectable sortable textAlign='center'>
                         <Table.Header>
                             <Table.Row>
                                 {form.fields.map(field =>

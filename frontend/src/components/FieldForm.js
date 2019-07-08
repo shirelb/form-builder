@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Dropdown, Form, Input, Message} from 'semantic-ui-react';
+import constants from '../shared/constants';
 
 const inputTypeOptions = [
     {key: 'text', text: 'text', value: 'text'},
@@ -15,22 +16,17 @@ export default class FieldForm extends Component {
     constructor(props) {
         super(props);
 
-        const {} = props;
-
         this.state = {
             field: {},
+
             formError: false,
             formErrorHeader: "",
             formErrorContent: "",
-            formComplete: false,
-            isAlertModal: false,
         };
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleSubmit(e) {
+    handleSubmit = (e) => {
         e.preventDefault();
 
         const {field} = this.state;
@@ -38,32 +34,31 @@ export default class FieldForm extends Component {
 
         //todo complete validations
         handleSubmit(field)
-    }
+    };
 
-    handleChange(e, {name, value}) {
+    handleChange = (e, {name, value}) => {
         const {field} = this.state;
 
-        this.setState({formError: false, formErrorHeader: '', formErrorContent: '', formComplete: false});
+        this.setState({formError: false, formErrorHeader: '', formErrorContent: ''});
         this.setState({field: {...field, [name]: value}});
-    }
+    };
 
     handleClear = (e) => {
         e.preventDefault();
         this.setState({
             field: {
-                label:'',
-                name:'',
-                type:'',
+                label: '',
+                name: '',
+                type: '',
             },
             formError: false,
             formErrorHeader: "",
             formErrorContent: "",
-            formComplete: false,
         });
     };
 
     render() {
-        const {field, formError, formErrorHeader, formErrorContent, formComplete} = this.state;
+        const {field, formError, formErrorHeader, formErrorContent} = this.state;
         const {handleCancel, submitText} = this.props;
 
         return (
@@ -73,7 +68,6 @@ export default class FieldForm extends Component {
                     label='Field Label'
                     placeholder='Field Label'
                     fluid
-                    // value={field.label}
                     onChange={this.handleChange}
                     name='label'
                     required
@@ -83,7 +77,6 @@ export default class FieldForm extends Component {
                     label='Input Name'
                     placeholder='Input Name'
                     fluid
-                    // value={field.name}
                     onChange={this.handleChange}
                     name='name'
                     required
@@ -112,15 +105,11 @@ export default class FieldForm extends Component {
                     />
                     : null
                 }
-                {formComplete ?
-                    <Message success header='פרטי תור הושלמו' content="התור נקבע בהצלחה"/>
-                    : null
-                }
 
                 <Form.Group style={{marginTop: 20}}>
                     <Form.Button positive type="submit">{submitText}</Form.Button>
-                    <Form.Button negative onClick={handleCancel}>Cancel</Form.Button>
-                    <Form.Button onClick={this.handleClear}>Clear</Form.Button>
+                    <Form.Button negative onClick={handleCancel}>{constants.buttons.CANCEL}</Form.Button>
+                    <Form.Button onClick={this.handleClear}>{constants.buttons.CLEAR}</Form.Button>
                 </Form.Group>
             </Form>
         )

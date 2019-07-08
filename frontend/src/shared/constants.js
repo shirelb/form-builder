@@ -8,6 +8,7 @@ exports.titles = {
     FORM_BUILDER_PAGE_TITLE: "Form Builder",
     FORM_SUBMIT_PAGE_TITLE: "Submit Form",
     FORM_SUBMISSIONS_PAGE_TITLE: "Form Submissions",
+    PAGE_NOT_FOUND_TITLE: "Page Not Found",
 };
 
 exports.headers = {
@@ -21,9 +22,25 @@ exports.headers = {
 exports.buttons = {
     ADD_FORM: "Build New Form",
     ADD_FIELD: "New Field",
+    SAVE_FIELD: "Add",
+    SAVE_FORM: "Save",
+    SUBMIT_FORM: "Submit",
+    CANCEL: "Cancel",
+    CLEAR: "Clear",
 };
 
 exports.server = {
     URL: "http://192.168.0.102:3001",
+};
+
+exports.routs = {
+    FORM_LIST_PAGE: "/forms",
+    FORM_BUILDER_PAGE: "/formsBuilder",
+    FORM_SUBMIT_PAGE: "/forms/:formId/submit",
+    FORM_SUBMISSIONS_PAGE: "/forms/:formId/submissions",
+};
+
+exports.messages = {
+    WARNING_FORM_NAME: "Is this the form name you want?",
 };
 

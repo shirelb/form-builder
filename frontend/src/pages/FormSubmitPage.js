@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import submissionsStorage from "../storage/submissions";
 import {Helmet} from "react-helmet";
 import {Form, Grid, Header} from "semantic-ui-react";
+import constants from '../shared/constants';
 
 export default class FormSubmitPage extends Component {
     constructor(props) {
@@ -32,7 +33,7 @@ export default class FormSubmitPage extends Component {
 
         submissionsStorage.submitForm(form.id, submission)
             .then(response => {
-                this.props.history.push(`/form/${form.id}/submissions`, {
+                this.props.history.push(`/forms/${form.id}/submissions`, {
                     form: form,
                 })
             })
@@ -67,7 +68,7 @@ export default class FormSubmitPage extends Component {
                                 )
                             )}
 
-                            <Form.Button type='submit' disabled={form.fields.length === 0}>Save</Form.Button>
+                            <Form.Button type='submit' positive disabled={form.fields.length === 0}>{constants.buttons.SUBMIT_FORM}</Form.Button>
                         </Form>
                     </Grid.Row>
                 </Grid>

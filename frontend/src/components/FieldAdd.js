@@ -5,20 +5,6 @@ import {Grid, Header, Modal} from "semantic-ui-react";
 import constants from '../shared/constants'
 
 export default class FieldAdd extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.handleCancel = this.handleCancel.bind(this);
-    }
-
-    componentDidMount() {
-    }
-
-    handleCancel(e) {
-        e.preventDefault();
-
-        this.props.closeModal();
-    }
 
     render() {
         const {visible, handleSubmit} = this.props;
@@ -35,9 +21,9 @@ export default class FieldAdd extends React.Component {
                         <Header as="h1">{constants.buttons.ADD_FIELD}</Header>
 
                         <FieldForm
-                            submitText="Add"
+                            submitText={constants.buttons.SAVE_FIELD}
                             handleSubmit={handleSubmit}
-                            handleCancel={this.handleCancel}
+                            handleCancel={this.props.closeModal}
                         />
                     </Grid.Column>
                 </Grid>

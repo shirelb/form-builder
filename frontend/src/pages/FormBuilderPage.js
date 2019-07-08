@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {Button, Form, Grid, Header, Icon, Input} from 'semantic-ui-react'
+import {Button, Form, Grid, Header, Icon, Input, Message} from 'semantic-ui-react'
 import {Helmet} from "react-helmet";
 import constants from "../shared/constants";
 import FieldAdd from "../components/FieldAdd";
@@ -46,7 +46,7 @@ export default class FormBuilderPage extends Component {
 
         formsStorage.saveForm(form)
             .then(response => {
-                this.props.history.push('/formsList')
+                this.props.history.push(constants.routs.FORM_LIST_PAGE)
             })
     };
 
@@ -61,20 +61,16 @@ export default class FormBuilderPage extends Component {
                 </Helmet>
 
                 <Grid columns='equal' padded centered textAlign='center'>
-                    <Grid.Row columns={2}>
-                        <Grid.Column>
-                            <Header as="h1" textAlign={'right'}>
-                                {formNameInputVisible ?
-                                    <Input value={form.name} onChange={this.changeFormName}/>
-                                    :
-                                    form.name
-                                }
-                            </Header>
-                        </Grid.Column>
-                        <Grid.Column>
-                            <Icon name={formNameInputVisible ? 'check' : 'edit'}
-                                  onClick={() => this.setState({formNameInputVisible: !formNameInputVisible})}/>
-                        </Grid.Column>
+                    <Grid.Row>
+                        <Header as="h1" textAlign={'right'}>
+                            {formNameInputVisible ?
+                                <Input value={form.name} onChange={this.changeFormName}/>
+                                :
+                                <span style={{marginRight: 10}}>{form.name}</span>
+                            }
+                        </Header>
+                        <Icon name={formNameInputVisible ? 'check' : 'edit'}
+                              onClick={() => this.setState({formNameInputVisible: !formNameInputVisible})}/>
                     </Grid.Row>
                     <Grid.Row>
                         <Button positive icon labelPosition='left' onClick={this.toggleNewFieldModalVisible}>
@@ -93,14 +89,27 @@ export default class FormBuilderPage extends Component {
                                 (
                                     <Form.Field inline name={field.name} key={field.id}>
                                         <label>{field.label}</label>
-                                        <input placeholder={field.label} name={field.name} type={field.type} style={{width:200}}/>
+                                        <input placeholder={field.label} name={field.name} type={field.type}
+                                               style={{width: 200}}/>
                                     </Form.Field>
                                 )
                             )}
 
-                            <Form.Button type='submit' disabled={form.fields.length === 0}>Save</Form.Button>
+                            <Form.Button type='submit'
+                                         disabled={form.fields.length === 0}>{constants.buttons.SAVE_FORM}</Form.Button>
                         </Form>
                     </Grid.Row>
+
+                    {form.fields.length > 0 && form.name === constants.titles.FORM_BUILDER_PAGE_TITLE ?
+                        <Grid.Row>
+                            <Message
+                                warning
+                                content={constants.messages.WARNING_FORM_NAME}
+                            />
+                        </Grid.Row>
+                        : null
+                    }
+
                 </Grid>
             </div>
         )
