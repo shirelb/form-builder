@@ -15,7 +15,7 @@ const fieldSchema = new Schema(
 const formSchema = new Schema(
     {
         name: String,
-        fields: [fieldSchema]
+        fields: [fieldSchema],
     },
     {timestamps: true}
 );

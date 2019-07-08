@@ -14,6 +14,7 @@ const submitForm = (formId, submission) => {
             return error;
         });
 };
+
 const getFormSubmissions = (formId) => {
     return axios.get(`${server.URL}/api/submissions/${formId}`,
         {}

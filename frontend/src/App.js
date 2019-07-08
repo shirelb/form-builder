@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import 'semantic-ui-css/semantic.min.css';
-import {Button, Icon, Menu, Sidebar} from 'semantic-ui-react';
+import {Button, Header, Icon, Menu, Sidebar} from 'semantic-ui-react';
 import {BrowserRouter as Router, NavLink, Redirect, Route, Switch} from 'react-router-dom';
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 import constants from './shared/constants';
@@ -15,7 +15,7 @@ export default class MainPage extends Component {
         super(props);
 
         this.state = {
-            visible: false
+            menuVisible: false
         };
     }
 
@@ -23,12 +23,10 @@ export default class MainPage extends Component {
 
     }
 
-    handleHideClick = () => this.setState({visible: false})
-    handleShowClick = () => this.setState({visible: true})
-    handleSidebarHide = () => this.setState({visible: false})
+    toggleMenuVisibility = () => this.setState({menuVisible: !this.state.menuVisible});
 
     render() {
-        const {visible} = this.state;
+        const {menuVisible} = this.state;
 
         return (
             <Router>
@@ -38,22 +36,22 @@ export default class MainPage extends Component {
                             <Route
                                 exact
                                 path="/"
-                                render={() => <Redirect to="/formsList"/>}
+                                render={() => <Redirect to={constants.routs.FORM_LIST_PAGE}/>}
                             />
 
-                            <Button color='facebook' size='large' icon labelPosition='left' disabled={visible} onClick={this.handleShowClick}>
+                            <Button color='facebook' size='large' icon labelPosition='left' disabled={menuVisible}
+                                    onClick={this.toggleMenuVisibility}>
                                 <Icon name='bars'/>
                                 Menu
                             </Button>
 
-                            <Sidebar as={Menu} inverted onHide={this.handleSidebarHide}
-                                     visible={visible} animation='push' width="thin" icon="labeled"
-                                     direction="top">
-                                <Menu.Item name="formsList" as={NavLink} to="/formsList">
+                            <Sidebar as={Menu} inverted onHide={this.toggleMenuVisibility} visible={menuVisible}
+                                     animation='push' width="thin" icon="labeled" direction="top">
+                                <Menu.Item name="formsList" as={NavLink} to={constants.routs.FORM_LIST_PAGE}>
                                     <Icon name={constants.pagesIconsNames["formsList"]}/>
                                     {constants.titles.FORM_LIST_PAGE_TITLE}
                                 </Menu.Item>
-                                <Menu.Item name="formBuilder" as={NavLink} to="/formBuilder">
+                                <Menu.Item name="formBuilder" as={NavLink} to={constants.routs.FORM_BUILDER_PAGE}>
                                     <Icon name={constants.pagesIconsNames["formBuilder"]}/>
                                     {constants.titles.FORM_BUILDER_PAGE_TITLE}
                                 </Menu.Item>
@@ -67,13 +65,17 @@ export default class MainPage extends Component {
                                         timeout={300}
                                     >
                                         <Switch location={location}>
-                                            <Route exec path={`/formsList`} component={FormsListPage}/>
-                                            <Route exec path={`/formBuilder`} component={FormBuilderPage}/>
-                                            <Route exec path={`/form/:formId/submit`} component={FormSubmitPage}/>
-                                            <Route exec path={`/form/:formId/submissions`}
+                                            <Route exec path={constants.routs.FORM_BUILDER_PAGE}
+                                                   component={FormBuilderPage}/>
+                                            <Route exec path={constants.routs.FORM_SUBMIT_PAGE}
+                                                   component={FormSubmitPage}/>
+                                            <Route exec path={constants.routs.FORM_SUBMISSIONS_PAGE}
                                                    component={FormSubmissionsPage}/>
-                                            {/*<Route component={PageNotFound}/>*/}
-                                            <Route render={() => <div>Not Found</div>}/>
+                                            <Route exec path={constants.routs.FORM_LIST_PAGE}
+                                                   component={FormsListPage}/>
+                                            <Route render={() =>
+                                                <Header as="h1"> {constants.titles.PAGE_NOT_FOUND_TITLE}</Header>}
+                                            />
                                         </Switch>
                                     </CSSTransition>
                                 </TransitionGroup>
