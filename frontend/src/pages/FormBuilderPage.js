@@ -46,7 +46,7 @@ export default class FormBuilderPage extends Component {
 
         formsStorage.saveForm(form)
             .then(response => {
-                this.props.history.replace('/formsList')
+                this.props.history.push('/formsList')
             })
     };
 
@@ -94,8 +94,6 @@ export default class FormBuilderPage extends Component {
                                     <Form.Field inline name={field.name} key={field.id}>
                                         <label>{field.label}</label>
                                         <input placeholder={field.label} name={field.name} type={field.type} style={{width:200}}/>
-                                        {/*<Icon name='edit' onClick={this.toggel}/>*/}
-                                        {/*<Icon name='delete'/>*/}
                                     </Form.Field>
                                 )
                             )}

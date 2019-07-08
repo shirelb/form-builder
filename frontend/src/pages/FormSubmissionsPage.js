@@ -16,7 +16,7 @@ export default class FormSubmissionsPage extends Component {
     }
 
     loadSubmissions = () => {
-        submissionsStorage.getFormSubmissions(this.props.location.state.form.id)
+        submissionsStorage.getFormSubmissions(this.props.location.state.form._id)
             .then(submissions => {
                 this.setState({submissions})
             })

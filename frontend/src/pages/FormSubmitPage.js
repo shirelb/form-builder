@@ -9,20 +9,20 @@ export default class FormSubmitPage extends Component {
 
         this.state = {
             submission: {
-                formId: this.props.location.state.form.id,
+                form: this.props.location.state.form._id,
                 fields: []
             },
         };
     }
 
     handleChange = (e, formField) => {
-        const {name, value} = e.target;
+        const {value} = e.target;
         const {submission} = this.state;
 
         this.setState({formError: false, formErrorHeader: '', formErrorContent: '', formComplete: false});
 
         let fields = submission.fields;
-        fields[formField.id] = {id: formField.id, name: name, value: value};
+        fields[formField.id] = {id: formField.id, value: value};
         this.setState({submission});
     };
 
@@ -32,7 +32,7 @@ export default class FormSubmitPage extends Component {
 
         submissionsStorage.submitForm(form.id, submission)
             .then(response => {
-                this.props.history.replace(`/form/${form.id}/submissions`, {
+                this.props.history.push(`/form/${form.id}/submissions`, {
                     form: form,
                 })
             })
@@ -40,7 +40,6 @@ export default class FormSubmitPage extends Component {
 
     render() {
         const {form} = this.props.location.state;
-        const {submission} = this.state;
 
         return (
             <div className="FormBuilderPage">
@@ -59,16 +58,6 @@ export default class FormSubmitPage extends Component {
                         <Form onSubmit={this.handleSubmitForm}>
                             {form.fields.map((field) =>
                                 (
-                                    /*<Form.Input
-                                        inline
-                                        name={field.name}
-                                        key={field.id}
-                                        label={field.label}
-                                        placeholder={field.label}
-                                        type={field.type}
-                                        onChange={(e, data) => this.handleChange(e, data, field)}
-                                        style={{width:200}}
-                                    />*/
                                     <Form.Field inline name={field.name} key={field.id}>
                                         <label>{field.label}</label>
                                         <input placeholder={field.label} name={field.name} type={field.type}

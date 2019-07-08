@@ -1,11 +1,12 @@
 const Submission = require('../models/submission.js');
+const formStorage = require('./form.js');
 
 exports.create = (req, res) => {
     let submission = new Submission(req.body);
 
     return submission.save()
-        .then(form => {
-            return res.json({success: true, data: form});
+        .then(async submission => {
+            return res.json({success: true, data: submission});
         })
         .catch(err => {
             return res.json({success: false, error: err});
@@ -13,7 +14,7 @@ exports.create = (req, res) => {
 };
 
 exports.findByFormId = (req, res) => {
-    return Submission.find({formId: req.params.formId})
+    return Submission.find({form: req.params.formId})
         .then(submissions => {
             return res.json({success: true, data: submissions});
         })

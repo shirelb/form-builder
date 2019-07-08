@@ -5,14 +5,13 @@ const Schema = mongoose.Schema;
 const fieldSchema = new Schema(
     {
         id: Number,
-        name: String,
         value:String,
     }
 );
 
 const submissionSchema = new Schema(
     {
-        formId: Number,
+        form:{ type: Schema.Types.ObjectId, ref: 'Form' },
         fields: [fieldSchema]
     },
     {timestamps: true}

@@ -51,12 +51,10 @@ export default class FormsListPage extends Component {
                                 <Table.HeaderCell>{constants.headers.FORM_SUBMISSIONS_HEADER}</Table.HeaderCell>
                                 <Table.HeaderCell>{constants.headers.FORM_SUBMIT_PAGE_HEADER}</Table.HeaderCell>
                                 <Table.HeaderCell>{constants.headers.FORM_SUBMISSIONS_PAGE_HEADER}</Table.HeaderCell>
-                                <Table.HeaderCell>{constants.headers.FORM_RATING_HEADER}</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
 
                         <Table.Body>
-                            {/*{forms.slice(startIndexUsers, startIndexUsers + TOTAL_PER_PAGE).map(user =>*/}
                             {forms.map(form =>
                                 (<Table.Row key={form.id}>
                                     <Table.Cell singleLine> {form.id} </Table.Cell>
@@ -65,7 +63,7 @@ export default class FormsListPage extends Component {
                                             {form.name}
                                         </Header>
                                     </Table.Cell>
-                                    <Table.Cell singleLine>0</Table.Cell>
+                                    <Table.Cell singleLine>{form.submissionsNum}</Table.Cell>
                                     <Table.Cell>
                                         <Link to={{
                                             pathname: `/form/${form.id}/submit`,
@@ -81,9 +79,6 @@ export default class FormsListPage extends Component {
                                         }}>
                                             View
                                         </Link>
-                                    </Table.Cell>
-                                    <Table.Cell>
-                                        <Rating icon='star' defaultRating={3} maxRating={3}/>
                                     </Table.Cell>
                                 </Table.Row>)
                             )}

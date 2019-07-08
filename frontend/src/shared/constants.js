@@ -16,7 +16,6 @@ exports.headers = {
     FORM_SUBMISSIONS_HEADER: "# Submissions",
     FORM_SUBMIT_PAGE_HEADER: "Submit Page",
     FORM_SUBMISSIONS_PAGE_HEADER: "Submissions Page",
-    FORM_RATING_HEADER: "Form Rating",
 };
 
 exports.buttons = {
@@ -25,6 +24,6 @@ exports.buttons = {
 };
 
 exports.server = {
-    URL: "http://192.168.0.104:3001",
+    URL: "http://192.168.0.102:3001",
 };
 
