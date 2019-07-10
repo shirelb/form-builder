@@ -1,23 +1,27 @@
 var express = require('express');
-var router = express.Router();
-const Submission = require('../db/models/submission');
+var router = express.Router({mergeParams: true});
 const submissionStorage = require('../db/controllers/submission');
 
-router.get('/:formId', async function (req, res, next) {
-    await submissionStorage.findByFormId(req, res);
+router.get('/', function (req, res, next) {
+    submissionStorage.findByFormId(req.params.formId)
+        .then(submissions => {
+            return res.json({success: true, data: submissions});
+        })
+        .catch(err => {
+            return res.json({success: false, error: err});
+        });
 });
 
-router.post('/:formId/submit', async function (req, res, next) {
-    const {submission} = req.body;
-
-    //TODO complete validations
-    /*    if ((!id && id !== 0)) {
-            return res.json({
-                success: false,
-                error: 'INVALID INPUTS',
-            });
-        }*/
-    await submissionStorage.create(req, res);
+router.post('/submit', function (req, res, next) {
+    submissionStorage.create(req.body)
+        .then(submission => {
+            return res.json({success: true, data: submission});
+        })
+        .catch(err => {
+            if (err.name === 'ValidationError')
+                return res.status(400).json({success: false, error: err});
+            return res.status(500).json({success: false, error: err});
+        });
 });
 
 module.exports = router;

@@ -9,7 +9,6 @@ var cors = require('cors');
 var db = require('./db/setup');
 db.setUpDB();
 var formsRouter = require('./routes/forms');
-var submissionsRouter = require('./routes/submissions');
 
 var pathToFrontBuild = '../frontend';
 
@@ -29,7 +28,6 @@ server.use(cookieParser());
 server.use(express.static(path.join(__dirname, 'public')));
 
 server.use('/api/forms', formsRouter);
-server.use('/api/submissions', submissionsRouter);
 
 server.get('/*', function (req, res) {
     res.sendFile(path.resolve(pathToFrontBuild, 'build', 'index.html'));

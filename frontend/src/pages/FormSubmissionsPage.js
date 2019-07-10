@@ -38,7 +38,7 @@ export default class FormSubmissionsPage extends Component {
                     <Table celled striped selectable sortable textAlign='center'>
                         <Table.Header>
                             <Table.Row>
-                                {form.fields.map(field =>
+                                {form.fields.sort((field1,field2) => field1.id - field2.id).map(field =>
                                     (
                                         <Table.HeaderCell key={field.id} singleLine>{field.label}</Table.HeaderCell>
                                     )
@@ -50,7 +50,7 @@ export default class FormSubmissionsPage extends Component {
                             {submissions.map(submission =>
                                 (<Table.Row key={submission.id}>
                                     {submission.fields ?
-                                        submission.fields.map(field =>
+                                        submission.fields.sort((field1,field2) => field1.id - field2.id).map(field =>
                                             (<Table.Cell key={field.id} singleLine> {field.value} </Table.Cell>)
                                         )
                                         : null

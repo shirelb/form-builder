@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import 'semantic-ui-css/semantic.min.css';
 import {Button, Header, Icon, Menu, Sidebar} from 'semantic-ui-react';
 import {BrowserRouter as Router, NavLink, Redirect, Route, Switch} from 'react-router-dom';
-import {CSSTransition, TransitionGroup} from "react-transition-group";
 import constants from './shared/constants';
 import FormSubmissionsPage from './pages/FormSubmissionsPage';
 import FormSubmitPage from './pages/FormSubmitPage';
@@ -17,10 +16,6 @@ export default class MainPage extends Component {
         this.state = {
             menuVisible: false
         };
-    }
-
-    componentDidMount() {
-
     }
 
     toggleMenuVisibility = () => this.setState({menuVisible: !this.state.menuVisible});
@@ -58,27 +53,19 @@ export default class MainPage extends Component {
                             </Sidebar>
 
                             <div style={styles.content}>
-                                <TransitionGroup>
-                                    <CSSTransition
-                                        key={location.key}
-                                        classNames="fade"
-                                        timeout={300}
-                                    >
-                                        <Switch location={location}>
-                                            <Route exec path={constants.routs.FORM_BUILDER_PAGE}
-                                                   component={FormBuilderPage}/>
-                                            <Route exec path={constants.routs.FORM_SUBMIT_PAGE}
-                                                   component={FormSubmitPage}/>
-                                            <Route exec path={constants.routs.FORM_SUBMISSIONS_PAGE}
-                                                   component={FormSubmissionsPage}/>
-                                            <Route exec path={constants.routs.FORM_LIST_PAGE}
-                                                   component={FormsListPage}/>
-                                            <Route render={() =>
-                                                <Header as="h1"> {constants.titles.PAGE_NOT_FOUND_TITLE}</Header>}
-                                            />
-                                        </Switch>
-                                    </CSSTransition>
-                                </TransitionGroup>
+                                <Switch location={location}>
+                                    <Route exec path={constants.routs.FORM_BUILDER_PAGE}
+                                           component={FormBuilderPage}/>
+                                    <Route exec path={constants.routs.FORM_SUBMIT_PAGE}
+                                           component={FormSubmitPage}/>
+                                    <Route exec path={constants.routs.FORM_SUBMISSIONS_PAGE}
+                                           component={FormSubmissionsPage}/>
+                                    <Route exec path={constants.routs.FORM_LIST_PAGE}
+                                           component={FormsListPage}/>
+                                    <Route render={() =>
+                                        <Header as="h1"> {constants.titles.PAGE_NOT_FOUND_TITLE}</Header>}
+                                    />
+                                </Switch>
                             </div>
                         </div>
                     )}

@@ -1,24 +1,18 @@
 const Form = require('../models/form.js');
 const Submission = require('../models/submission.js');
 
-exports.create = (req, res) => {
-    const {name, fields} = req.body;
+exports.create = (formReq) => {
+    const {name, fields} = formReq;
 
     let form = new Form();
 
     form.name = name;
     form.fields = fields;
 
-    return form.save()
-        .then(form => {
-            return res.json({success: true, data: form});
-        })
-        .catch(err => {
-            return res.json({success: false, error: err});
-        });
+    return form.save();
 };
 
-exports.findAll = (req, res) => {
+exports.findAll = () => {
     return Form.find()
         .then(async forms => {
             let submissionsGroupByForm = await Submission.aggregate([
@@ -35,33 +29,18 @@ exports.findAll = (req, res) => {
                 return Object.assign(form._doc, {submissionsNum: submissionsNum ? submissionsNum.total : 0})
             });
 
-            return res.json({success: true, data: formsWithNumOfSubmissions});
+            return formsWithNumOfSubmissions;
         })
-        .catch(err => {
-            return res.json({success: false, error: err});
-        });
 };
 
-exports.findOne = (req, res) => {
-    return Form.findOne({id: req.params.formId})
+exports.findOne = (formId) => {
+    return Form.findOne({id: formId})
         .then(form => {
             if (!form) {
-                return res.status(404).send({
-                    success: false, error: "Form not found with id " + req.params.formId
-                });
+                throw new ReferenceError("Form not found with id " + req.params.formId);
             }
-            return res.json({success: true, data: form});
+            return form;
         })
-        .catch(err => {
-            if (err.kind === 'ObjectId') {
-                return res.status(404).send({
-                    success: false, error: "Form not found with id " + req.params.formId
-                });
-            }
-            return res.json({
-                success: false, error: "Error retrieving form with id " + req.params.formId
-            });
-        });
 };
 
 exports.findByDocId = (formId) => {
@@ -83,61 +62,6 @@ exports.findByDocId = (formId) => {
             return {
                 success: false, error: "Error retrieving form with id " + formId
             };
-        });
-};
-
-//todo complete update
-exports.update = (req, res) => {
-    // Find form and update it with the request body
-    return Form.findByIdAndUpdate(req.params.formId, {
-        title: req.body.title || "Untitled Form",
-        content: req.body.content
-    }, {new: true})
-        .then(form => {
-            if (!form) {
-                return res.status(404).send({
-                    success: false, error: "Form not found with id " + req.params.formId
-                });
-            }
-            res.send(form);
-        }).catch(err => {
-            if (err.kind === 'ObjectId') {
-                return res.status(404).send({
-                    success: false, error: "Form not found with id " + req.params.formId
-                });
-            }
-            return res.status(500).send({
-                success: false, error: "Error updating form with id " + req.params.formId
-            });
-        });
-
-    const {id, updatedForm} = req.body;
-    return Form.findByIdAndUpdate(id, updatedForm, (err) => {
-        if (err)
-            return res.json({success: false, error: err});
-        return res.json({success: true});
-    });
-};
-
-exports.delete = (req, res) => {
-    return Form.findOneAndRemove({id: req.params.formId})
-        .then(form => {
-            if (!form) {
-                return res.status(404).send({
-                    success: false, error: "Form not found with id " + req.params.formId
-                });
-            }
-            return res.send({success: true});
-        })
-        .catch(err => {
-            if (err.kind === 'ObjectId' || err.name === 'NotFound') {
-                return res.status(404).send({
-                    success: false, error: "Form not found with id " + req.params.formId
-                });
-            }
-            return res.status(500).send({
-                success: false, error: "Could not delete form with id " + req.params.formId
-            });
         });
 };
 

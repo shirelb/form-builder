@@ -32,8 +32,55 @@ export default class FieldForm extends Component {
         const {field} = this.state;
         const {handleSubmit} = this.props;
 
-        //todo complete validations
-        handleSubmit(field)
+        if (this.ifFieldValid())
+            handleSubmit(field);
+    };
+
+    ifFieldValid = () => {
+        const {field} = this.state;
+
+        if (!field.label || field.label.length === 0) {
+            this.setState({
+                formError: true,
+                formErrorHeader: constants.validation.fields.FIELD_LABEL,
+                formErrorContent: constants.validation.messages.NOT_EMPTY
+            });
+            return false;
+        }
+        if (!field.name || field.name.length === 0) {
+            this.setState({
+                formError: true,
+                formErrorHeader: constants.validation.fields.FIELD_NAME,
+                formErrorContent: constants.validation.messages.NOT_EMPTY
+            });
+            return false;
+        }
+        if (!field.type || field.type.length === 0) {
+            this.setState({
+                formError: true,
+                formErrorHeader:  constants.validation.fields.FIELD_TYPE,
+                formErrorContent: constants.validation.messages.NOT_EMPTY
+            });
+            return false;
+        }
+        if (!/^\S*$/.test(field.name)) {
+            this.setState({
+                formError: true,
+                formErrorHeader: constants.validation.fields.FIELD_NAME,
+                formErrorContent: constants.validation.messages.NO_SPACES
+            });
+            return false;
+        }
+        if (!constants.fieldType.includes(field.type)) {
+            this.setState({
+                formError: true,
+                formErrorHeader:  constants.validation.fields.FIELD_TYPE,
+                formErrorContent: constants.validation.messages.NOT_CONTAINS + constants.fieldType.join(',')
+            });
+            return false;
+        }
+
+        return true;
     };
 
     handleChange = (e, {name, value}) => {
