@@ -1,5 +1,4 @@
 const Submission = require('../models/submission.js');
-const formStorage = require('./form.js');
 
 exports.create = (req, res) => {
     let submission = new Submission(req.body);
@@ -9,7 +8,9 @@ exports.create = (req, res) => {
             return res.json({success: true, data: submission});
         })
         .catch(err => {
-            return res.json({success: false, error: err});
+            if (err.name === 'ValidationError')
+                return res.status(400).json({success: false, error: err});
+            return res.status(500).json({success: false, error: err});
         });
 };
 

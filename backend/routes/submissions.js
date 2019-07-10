@@ -1,22 +1,12 @@
 var express = require('express');
-var router = express.Router();
-const Submission = require('../db/models/submission');
+var router = express.Router({mergeParams: true});
 const submissionStorage = require('../db/controllers/submission');
 
-router.get('/:formId', async function (req, res, next) {
+router.get('/', async function (req, res, next) {
     await submissionStorage.findByFormId(req, res);
 });
 
-router.post('/:formId/submit', async function (req, res, next) {
-    const {submission} = req.body;
-
-    //TODO complete validations
-    /*    if ((!id && id !== 0)) {
-            return res.json({
-                success: false,
-                error: 'INVALID INPUTS',
-            });
-        }*/
+router.post('/submit', async function (req, res, next) {
     await submissionStorage.create(req, res);
 });
 

@@ -3,7 +3,7 @@ import {server} from "../shared/constants";
 
 
 const submitForm = (formId, submission) => {
-    return axios.post(`${server.URL}/api/submissions/${formId}/submit`,
+    return axios.post(`${server.URL}/api/forms/${formId}/submissions/submit`,
         submission
     )
         .then(response => {
@@ -16,7 +16,7 @@ const submitForm = (formId, submission) => {
 };
 
 const getFormSubmissions = (formId) => {
-    return axios.get(`${server.URL}/api/submissions/${formId}`,
+    return axios.get(`${server.URL}/api/forms/${formId}/submissions`,
         {}
     )
         .then(response => {

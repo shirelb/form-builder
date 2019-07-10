@@ -30,7 +30,7 @@ exports.buttons = {
 };
 
 exports.server = {
-    URL: "http://192.168.0.102:3001",
+    URL: "http://192.168.0.103:3001",
 };
 
 exports.routs = {
