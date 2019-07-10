@@ -3,6 +3,7 @@ const autoIncrement = require('mongoose-auto-increment');
 const exists = require('mongoose-exists');
 const Schema = mongoose.Schema;
 const constants = require('../../shared/constants');
+var sanitizerPlugin = require('mongoose-sanitizer');
 
 const fieldSchema = new Schema(
     {
@@ -34,6 +35,7 @@ const submissionSchema = new Schema(
     {timestamps: true}
 );
 
+submissionSchema.plugin(sanitizerPlugin);
 submissionSchema.plugin(exists);
 submissionSchema.plugin(autoIncrement.plugin, {model: 'Submission', field: 'id'});
 module.exports = mongoose.model("Submission", submissionSchema);

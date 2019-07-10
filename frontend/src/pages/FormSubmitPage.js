@@ -57,7 +57,7 @@ export default class FormSubmitPage extends Component {
                     </Grid.Row>
                     <Grid.Row>
                         <Form onSubmit={this.handleSubmitForm}>
-                            {form.fields.map((field) =>
+                            {form.fields.sort((field1, field2) => field1.id - field2.id).map((field) =>
                                 (
                                     <Form.Field inline name={field.name} key={field.id}>
                                         <label>{field.label}</label>
@@ -68,7 +68,8 @@ export default class FormSubmitPage extends Component {
                                 )
                             )}
 
-                            <Form.Button type='submit' positive disabled={form.fields.length === 0}>{constants.buttons.SUBMIT_FORM}</Form.Button>
+                            <Form.Button type='submit' positive
+                                         disabled={form.fields.length === 0}>{constants.buttons.SUBMIT_FORM}</Form.Button>
                         </Form>
                     </Grid.Row>
                 </Grid>

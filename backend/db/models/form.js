@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 var autoIncrement = require('mongoose-auto-increment');
 const Schema = mongoose.Schema;
 const constants = require('../../shared/constants');
+var sanitizerPlugin = require('mongoose-sanitizer');
 
 const fieldSchema = new Schema(
     {
@@ -79,5 +80,6 @@ const formSchema = new Schema(
     {timestamps: true}
 );
 
+formSchema.plugin(sanitizerPlugin);
 formSchema.plugin(autoIncrement.plugin, {model: 'Form', field: 'id'});
 module.exports = mongoose.model("Form", formSchema);

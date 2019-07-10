@@ -11,7 +11,6 @@ let formStorage = require('../db/controllers/form');
 let submissionStorage = require('../db/controllers/submission');
 let submissionJson = require('./jsons/submissionTest');
 let formJson = require('./jsons/formTest');
-const constants = require('../shared/constants');
 
 chai.use(chaiHttp);
 

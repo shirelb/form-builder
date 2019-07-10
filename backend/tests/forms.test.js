@@ -23,7 +23,7 @@ describe('forms route should', function () {
 
     after((done) => {
         formStorage.deleteAll();
-        db.disconnectDB().then(done())
+        db.disconnectDB().then(done());
     });
 
     step('POST a form', (done) => {
@@ -80,17 +80,6 @@ describe('forms route should', function () {
                 expect(res.body).to.be.a('object');
                 expect(res.body.success).to.be.false;
                 expect(res.body.error).to.eq("Form not found with id 2");
-                done();
-            });
-    });
-
-    step('DELETE form with id 0', (done) => {
-        chai.request(server)
-            .delete('/api/forms/0')
-            .end((err, res) => {
-                expect(res).to.have.status(200);
-                expect(res.body).to.be.a('object');
-                expect(res.body.success).to.be.true;
                 done();
             });
     });
@@ -184,7 +173,7 @@ describe('forms route should', function () {
             });
     });
 
-    step('GET empty array for all the forms', (done) => {
+    step('GET array with 1 form', (done) => {
         chai.request(server)
             .get('/api/forms')
             .end((err, res) => {
@@ -192,7 +181,7 @@ describe('forms route should', function () {
                 expect(res.body).to.be.a('object');
                 expect(res.body.success).to.be.true;
                 expect(res.body.data).to.be.a('array');
-                expect(res.body.data.length).to.be.eql(0);
+                expect(res.body.data.length).to.be.eql(1);
                 done();
             });
     });
