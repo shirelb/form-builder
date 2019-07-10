@@ -16,6 +16,8 @@ chai.use(chaiHttp);
 
 
 describe('submissions route should', function () {
+    this.timeout(5000);
+
     let formDocId = 0;
     let formId = 0;
 

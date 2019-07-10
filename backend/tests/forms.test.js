@@ -15,6 +15,7 @@ chai.use(chaiHttp);
 
 
 describe('forms route should', function () {
+    this.timeout(5000);
 
     before((done) => {
         formStorage.deleteAll();
