@@ -48,7 +48,7 @@ export default class FormsListPage extends Component {
                             <Table.Row>
                                 <Table.HeaderCell singleLine>{constants.headers.FORM_ID_HEADER}</Table.HeaderCell>
                                 <Table.HeaderCell>{constants.headers.FORM_NAME_HEADER}</Table.HeaderCell>
-                                <Table.HeaderCell>{constants.headers.FORM_SUBMISSIONS_HEADER}</Table.HeaderCell>
+                                <Table.HeaderCell>{constants.headers.FORM_SUBMISSIONS_NUM_HEADER}</Table.HeaderCell>
                                 <Table.HeaderCell>{constants.headers.FORM_SUBMIT_PAGE_HEADER}</Table.HeaderCell>
                                 <Table.HeaderCell>{constants.headers.FORM_SUBMISSIONS_PAGE_HEADER}</Table.HeaderCell>
                             </Table.Row>

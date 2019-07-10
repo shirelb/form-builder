@@ -9,7 +9,6 @@ var cors = require('cors');
 var db = require('./db/setup');
 db.setUpDB();
 var formsRouter = require('./routes/forms');
-var submissionsRouter = require('./routes/submissions');
 
 var server = express();
 server.use(cors());
@@ -28,7 +27,6 @@ server.use(cookieParser());
 server.use(express.static(path.join(__dirname, 'public')));
 
 server.use('/api/forms', formsRouter);
-server.use('/api/submissions', submissionsRouter);
 
 // catch 404 and forward to error handler
 server.use(function (req, res, next) {
