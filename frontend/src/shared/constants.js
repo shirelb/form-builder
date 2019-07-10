@@ -30,7 +30,7 @@ exports.buttons = {
 };
 
 exports.server = {
-    URL: "http://192.168.0.102:3001",
+    URL: "http://localhost:3000",
 };
 
 exports.routs = {

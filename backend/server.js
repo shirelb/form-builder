@@ -11,12 +11,13 @@ db.setUpDB();
 var formsRouter = require('./routes/forms');
 var submissionsRouter = require('./routes/submissions');
 
+var pathToFrontBuild = '../frontend';
+
 var server = express();
 server.use(cors());
 
-// view engine setup
-server.set('views', path.join(__dirname, 'views'));
-server.set('view engine', 'pug');
+server.use(express.static(pathToFrontBuild));
+server.use(express.static(path.join(pathToFrontBuild, 'build')));
 
 server.use(bodyParser.urlencoded({extended: false}));
 server.use(bodyParser.json());
@@ -29,6 +30,10 @@ server.use(express.static(path.join(__dirname, 'public')));
 
 server.use('/api/forms', formsRouter);
 server.use('/api/submissions', submissionsRouter);
+
+server.get('/*', function (req, res) {
+    res.sendFile(path.resolve(pathToFrontBuild, 'build', 'index.html'));
+});
 
 // catch 404 and forward to error handler
 server.use(function (req, res, next) {
