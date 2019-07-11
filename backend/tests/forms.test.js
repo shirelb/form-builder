@@ -5,9 +5,9 @@ let chaiHttp = require('chai-http');
 const expect = chai.expect;
 const sinon = require("sinon");
 
-let server = require('../server');
 let db = require('../db/setup');
-let formStorage = require('../db/controllers/form');
+let server = null;
+let formStorage = null;
 let formJson = require('./jsons/formTest');
 const constants = require('../shared/constants');
 
@@ -18,13 +18,15 @@ describe('forms route should', function () {
     this.timeout(5000);
 
     before((done) => {
+        server = require('../server');
+        formStorage = require('../db/controllers/form');
         formStorage.deleteAll();
         done();
     });
 
     after((done) => {
         formStorage.deleteAll();
-        db.disconnectDB().then(done());
+        done();
     });
 
     step('POST a form', (done) => {

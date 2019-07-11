@@ -5,10 +5,10 @@ let chaiHttp = require('chai-http');
 const expect = chai.expect;
 const sinon = require("sinon");
 
-let server = require('../server');
+let server = null;
 let db = require('../db/setup');
-let formStorage = require('../db/controllers/form');
-let submissionStorage = require('../db/controllers/submission');
+let formStorage = null;
+let submissionStorage = null;
 let submissionJson = require('./jsons/submissionTest');
 let formJson = require('./jsons/formTest');
 
@@ -22,6 +22,9 @@ describe('submissions route should', function () {
     let formId = 0;
 
     before((done) => {
+        server = require('../server');
+        formStorage = require('../db/controllers/form');
+        submissionStorage = require('../db/controllers/submission');
         formStorage.deleteAll();
         submissionStorage.deleteAll();
         done();
@@ -70,7 +73,7 @@ describe('submissions route should', function () {
                 expect(res.body).to.be.a('object');
                 expect(res.body.success).to.be.true;
                 expect(res.body.data).to.be.a('object');
-                expect(res.body.data.id).to.eq(0);
+                expect(res.body.data.id).to.eq(1);
                 expect(res.body.data.name).to.eq(formJson.name);
                 expect(res.body.data.fields).to.be.a('array');
                 expect(res.body.data.fields).to.have.length(2);

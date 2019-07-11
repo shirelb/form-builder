@@ -54,7 +54,7 @@ describe("FormBuilderPage should", () => {
     });
 
     test("mounted with the right data", async () => {
-        expect(componentInstance.state.form.name).toEqual(constants.titles.FORM_BUILDER_PAGE_TITLE);
+        expect(componentInstance.state.form.name).toEqual(constants.headers.FORM_NAME_HEADER);
         expect(componentInstance.state.form.fields).toEqual([]);
         expect(componentInstance.state.fieldAddModalVisible).toBeFalsy();
         expect(componentInstance.state.formNameInputVisible).toBeFalsy();
@@ -66,7 +66,7 @@ describe("FormBuilderPage should", () => {
         expect(wrapper.find('Grid')).toHaveLength(1);
         expect(wrapper.find('GridRow')).toHaveLength(3);
         expect(wrapper.find('Header')).toHaveLength(1);
-        expect(wrapper.find('Header').props().children.props.children).toEqual(constants.titles.FORM_BUILDER_PAGE_TITLE);
+        expect(wrapper.find('Header').props().children.props.children).toEqual(constants.headers.FORM_NAME_HEADER);
         expect(wrapper.find('Icon')).toHaveLength(2);
         expect(wrapper.find('Button')).toHaveLength(2);
         expect(wrapper.find('Button').first().props().children[1]).toEqual(constants.buttons.ADD_FIELD);
