@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests/ --require mocha-steps",
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "setupAndRun": "cd .. && cd frontend && npm i && npm run build && cd .. && cd backend && npm i && npm start"
   },
   "keywords": [],
   "author": "",

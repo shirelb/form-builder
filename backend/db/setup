@@ -9,6 +9,7 @@ const connectToInMemoryDb = async () => {
     return await mongoose.connect(url, {useNewUrlParser: true});
 };
 
+// normally I would not put sensitive data in the repo, but its an exercise, so no real data and this cluster was made only for the exercise :)
 const connectToCloudDb = async () => {
     const dbRoute =
         'mongodb+srv://adminUser:adminUser@formbuilder-xptgv.mongodb.net/test?retryWrites=true&w=majority';
@@ -17,7 +18,9 @@ const connectToCloudDb = async () => {
 };
 
 exports.setUpDB = () => {
-    const dbConnection = process.dbMode === 'inMemory' ? connectToInMemoryDb() : connectToCloudDb();
+    // switch this line to connect to mongo in the cloud
+    // const dbConnection = process.dbMode === 'inMemory' ? connectToInMemoryDb() : connectToCloudDb();
+    const dbConnection = connectToInMemoryDb();
 
     let db = mongoose.connection;
 
