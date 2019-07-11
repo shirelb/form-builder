@@ -6,8 +6,8 @@ exports.create = (submissionReq) => {
     return submission.save();
 };
 
-exports.findByFormId = (formId) => {
-    return Submission.find({form: formId});
+exports.findByFormId = (formDocId) => {
+    return Submission.find({form: formDocId});
 };
 
 exports.deleteAll = () => {

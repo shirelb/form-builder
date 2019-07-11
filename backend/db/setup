@@ -2,7 +2,16 @@ const mongoose = require('mongoose');
 const {MongoMemoryServer} = require('mongodb-memory-server');
 const autoIncrement = require('mongoose-auto-increment');
 
-const mongoServer = new MongoMemoryServer();
+const mongoServer = new MongoMemoryServer({
+    binary:{
+        version: '4.0.10'
+    },
+    instance: {
+        // Available engines:
+        // storageEngines: [ 'devnull', 'ephemeralForTest', 'mmapv1', 'wiredTiger' ],
+        storageEngine: 'wiredTiger',
+    },
+});
 
 const connectToInMemoryDb = async () => {
     const url = await mongoServer.getConnectionString();

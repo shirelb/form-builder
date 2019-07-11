@@ -37,7 +37,7 @@ exports.findOne = (formId) => {
     return Form.findOne({id: formId})
         .then(form => {
             if (!form) {
-                throw new ReferenceError("Form not found with id " + req.params.formId);
+                throw new ReferenceError("Form not found with id " + formId);
             }
             return form;
         })

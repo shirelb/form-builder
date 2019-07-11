@@ -8,7 +8,6 @@ const fieldSchema = new Schema(
     {
         id: {
             type: Number,
-            unique: true
         },
         label: {
             type: String,
