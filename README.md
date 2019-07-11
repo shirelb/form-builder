@@ -1,6 +1,6 @@
 # Form Builder
 
-How to run the form-builfer project:  
+### How to run the form-builfer project:  
 
 First make sure that port 3000 is available.  
 
