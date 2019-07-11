@@ -1,4 +1,4 @@
-exports.fieldType = ['text', 'color', 'date', 'email', 'tel', 'number ',];
+exports.fieldType = ['text', 'color', 'date', 'email', 'tel', 'number',];
 
 exports.validation = {
     fields: {

@@ -13,7 +13,7 @@ export default class FormBuilderPage extends Component {
 
         this.state = {
             form: {
-                name: constants.titles.FORM_BUILDER_PAGE_TITLE,
+                name: constants.titles.FORM_NAME_HEADER,
                 fields: []
             },
 
@@ -100,7 +100,7 @@ export default class FormBuilderPage extends Component {
                         </Form>
                     </Grid.Row>
 
-                    {form.fields.length > 0 && form.name === constants.titles.FORM_BUILDER_PAGE_TITLE ?
+                    {form.fields.length > 0 && form.name === constants.titles.FORM_NAME_HEADER ?
                         <Grid.Row>
                             <Message
                                 warning

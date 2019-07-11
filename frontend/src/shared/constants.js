@@ -44,7 +44,7 @@ exports.messages = {
     WARNING_FORM_NAME: "Is this the form name you want?",
 };
 
-exports.fieldType = ['text', 'color', 'date', 'email', 'tel', 'number ',];
+exports.fieldType = ['text', 'color', 'date', 'email', 'tel', 'number',];
 
 exports.validation = {
     fields: {
