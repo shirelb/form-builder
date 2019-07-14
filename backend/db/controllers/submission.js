@@ -1,4 +1,5 @@
 const Submission = require('../models/submission.js');
+const formStorage = require('./form.js');
 
 exports.create = (submissionReq) => {
     let submission = new Submission(submissionReq);
@@ -6,8 +7,11 @@ exports.create = (submissionReq) => {
     return submission.save();
 };
 
-exports.findByFormId = (formDocId) => {
-    return Submission.find({form: formDocId});
+exports.findByFormId = async (formId) => {
+    return formStorage.findOne(parseInt(formId))
+        .then(form => {
+            return Submission.find({form: form._id});
+        });
 };
 
 exports.deleteAll = () => {

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import submissionsStorage from "../storage/submissions";
+import formsStorage from "../storage/forms";
 import {Helmet} from "react-helmet";
 import {Form, Grid, Header} from "semantic-ui-react";
 import constants from '../shared/constants';
@@ -10,11 +11,37 @@ export default class FormSubmitPage extends Component {
 
         this.state = {
             submission: {
-                form: this.props.location.state.form._id,
+                form: null,
                 fields: []
             },
         };
     }
+
+    componentWillMount() {
+        this.loadForm();
+    }
+
+    loadForm = () => {
+        if (this.props.location.state)
+            this.setState({
+                submission: {
+                    form: this.props.location.state.form._id,
+                    fields: []
+                },
+                form: this.props.location.state.form
+            });
+        else
+            formsStorage.getFormById(this.props.match.params.formId)
+                .then(form => {
+                    this.setState({
+                        submission: {
+                            form: form._id,
+                            fields: []
+                        },
+                        form: form
+                    });
+                })
+    };
 
     handleChange = (e, formField) => {
         const {value} = e.target;
@@ -28,7 +55,7 @@ export default class FormSubmitPage extends Component {
     };
 
     handleSubmitForm = () => {
-        const {form} = this.props.location.state;
+        const {form} = this.state;
         const {submission} = this.state;
 
         submissionsStorage.submitForm(form.id, submission)

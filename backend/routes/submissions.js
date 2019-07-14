@@ -8,7 +8,11 @@ router.get('/', function (req, res, next) {
             return res.json({success: true, data: submissions});
         })
         .catch(err => {
-            return res.json({success: false, error: err});
+            if (err.name === 'ValidationError')
+                return res.status(400).json({success: false, error: err});
+            if (err.name === 'ReferenceError')
+                return res.status(404).json({success: false, error: "Form not found with id " + req.params.formId});
+            return res.status(500).json({success: false, error: err});
         });
 });
 

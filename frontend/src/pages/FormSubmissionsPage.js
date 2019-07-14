@@ -11,15 +11,23 @@ export default class FormSubmissionsPage extends Component {
         this.state = {
             submissions: [],
         };
+    }
 
+    componentWillMount() {
         this.loadSubmissions();
     }
 
     loadSubmissions = () => {
-        submissionsStorage.getFormSubmissions(this.props.location.state.form._id)
-            .then(submissions => {
-                this.setState({submissions})
-            })
+        if (this.props.location.state)
+            submissionsStorage.getFormSubmissions(this.props.location.state.form.id)
+                .then(submissions => {
+                    this.setState({submissions})
+                });
+        else
+            submissionsStorage.getFormSubmissions(this.props.match.params.formId)
+                .then(submissions => {
+                    this.setState({submissions})
+                })
     };
 
     render() {
@@ -38,7 +46,7 @@ export default class FormSubmissionsPage extends Component {
                     <Table celled striped selectable sortable textAlign='center'>
                         <Table.Header>
                             <Table.Row>
-                                {form.fields.sort((field1,field2) => field1.id - field2.id).map(field =>
+                                {form.fields.sort((field1, field2) => field1.id - field2.id).map(field =>
                                     (
                                         <Table.HeaderCell key={field.id} singleLine>{field.label}</Table.HeaderCell>
                                     )
@@ -50,7 +58,7 @@ export default class FormSubmissionsPage extends Component {
                             {submissions.map(submission =>
                                 (<Table.Row key={submission.id}>
                                     {submission.fields ?
-                                        submission.fields.sort((field1,field2) => field1.id - field2.id).map(field =>
+                                        submission.fields.sort((field1, field2) => field1.id - field2.id).map(field =>
                                             (<Table.Cell key={field.id} singleLine> {field.value} </Table.Cell>)
                                         )
                                         : null

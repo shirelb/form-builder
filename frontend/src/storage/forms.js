@@ -14,6 +14,19 @@ const getForms = () => {
         });
 };
 
+const getFormById = (formId) => {
+    return axios.get(`${server.URL}/api/forms/${formId}`,
+        {}
+    )
+        .then(response => {
+            return response.data.data;
+        })
+        .catch(error => {
+            console.log('get forms error ', error);
+            return error;
+        });
+};
+
 const saveForm = (form) => {
     return axios.post(`${server.URL}/api/forms/build`,
         form
@@ -27,4 +40,4 @@ const saveForm = (form) => {
         });
 };
 
-export default {getForms, saveForm}
+export default {getForms, saveForm,getFormById}

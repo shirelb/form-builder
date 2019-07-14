@@ -51,15 +51,14 @@ describe('submissions route should', function () {
             });
     });
 
-    step('GET empty array of submissions', (done) => {
+    step('GET error for submissions of non existent form ', (done) => {
         chai.request(server)
-            .get(`/api/forms/${submissionJson.form}/submissions`)
+            .get(`/api/forms/0/submissions`)
             .end((err, res) => {
-                expect(res).to.have.status(200);
+                expect(res).to.have.status(404);
                 expect(res.body).to.be.a('object');
-                expect(res.body.success).to.be.true;
-                expect(res.body.data).to.be.a('array');
-                expect(res.body.data.length).to.be.eql(0);
+                expect(res.body.success).to.be.false;
+                expect(res.body.error).to.eq("Form not found with id 0");
                 done();
             });
     });
@@ -100,9 +99,9 @@ describe('submissions route should', function () {
             });
     });
 
-    step('GET all the submissions for form ' + formDocId, (done) => {
+    step('GET all the submissions for form ' + formId, (done) => {
         chai.request(server)
-            .get(`/api/forms/${formDocId}/submissions`)
+            .get(`/api/forms/${formId}/submissions`)
             .end((err, res) => {
                 expect(res).to.have.status(200);
                 expect(res.body).to.be.a('object');
