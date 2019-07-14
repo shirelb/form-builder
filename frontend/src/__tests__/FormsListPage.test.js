@@ -18,6 +18,7 @@ jest.mock("../storage/forms");
 describe("FormsListPage should", () => {
     let wrapper = null;
     let componentInstance = null;
+    let formsFormRes = formsJson.data;
     const path = '/form';
     const history = createMemoryHistory({
         initialEntries: [path],
@@ -53,16 +54,16 @@ describe("FormsListPage should", () => {
     });
 
     test("mounted with the right data", async () => {
-        expect(componentInstance.state.forms.length).toEqual(formsJson.length);
+        expect(componentInstance.state.forms.length).toEqual(formsFormRes.length);
     });
 
     test("render with table", async () => {
         wrapper.update();
 
         expect(wrapper.find('Container')).toHaveLength(1);
-        expect(wrapper.find('Header')).toHaveLength(1 + formsJson.length);
+        expect(wrapper.find('Header')).toHaveLength(1 + formsFormRes.length);
         expect(wrapper.find('Header').get(0).props.children).toEqual(constants.titles.FORM_LIST_PAGE_TITLE);
-        expect(wrapper.find('Link')).toHaveLength(1 + 2 * formsJson.length);
+        expect(wrapper.find('Link')).toHaveLength(1 + 2 * formsFormRes.length);
         expect(wrapper.find('Link').first().find('Button')).toHaveLength(1);
         expect(wrapper.find('Link').first().find('Button').props().children).toEqual(constants.buttons.ADD_FORM);
         expect(wrapper.find('Table')).toHaveLength(1);
@@ -73,8 +74,8 @@ describe("FormsListPage should", () => {
         expect(wrapper.find('TableHeaderCell').at(2).props().children).toEqual(constants.headers.FORM_SUBMISSIONS_NUM_HEADER);
         expect(wrapper.find('TableHeaderCell').at(3).props().children).toEqual(constants.headers.FORM_SUBMIT_PAGE_HEADER);
         expect(wrapper.find('TableHeaderCell').at(4).props().children).toEqual(constants.headers.FORM_SUBMISSIONS_PAGE_HEADER);
-        expect(wrapper.find('TableRow')).toHaveLength(1 + formsJson.length);
-        expect(wrapper.find('TableCell')).toHaveLength(5 * formsJson.length + 5);
+        expect(wrapper.find('TableRow')).toHaveLength(1 + formsFormRes.length);
+        expect(wrapper.find('TableCell')).toHaveLength(5 * formsFormRes.length + 5);
     });
 
     test("open builder page on button click", async () => {

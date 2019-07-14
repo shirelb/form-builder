@@ -20,7 +20,8 @@ jest.mock("../storage/submissions");
 describe("FormSubmitPage should", () => {
     let wrapper = null;
     let componentInstance = null;
-    const path = `/forms/${formsJson[4].id}/submit`;
+    let formJson = formsJson.data[4];
+    const path = `/forms/${formsJson.data[4].id}/submit`;
     const history = createMemoryHistory({
         initialEntries: ['/forms', path],
         initialIndex: 1,
@@ -32,7 +33,7 @@ describe("FormSubmitPage should", () => {
         location: {
             pathname: path,
             state: {
-                form: formsJson[4]
+                form: formJson
             }
         },
         match: {
@@ -43,9 +44,7 @@ describe("FormSubmitPage should", () => {
     };
 
     formsStorage.getForms = jest.fn().mockResolvedValue(formsJson);
-    formsStorage.saveForm = jest.fn().mockResolvedValue();
-    submissionsStorage.submitForm = jest.fn().mockResolvedValue();
-    submissionsStorage.getFormSubmissions = jest.fn().mockResolvedValue();
+    submissionsStorage.submitForm = jest.fn().mockResolvedValue({success: true});
 
     beforeAll(async (done) => {
         wrapper = await mount(<MemoryRouter initialEntries={[path]} history={history}>
@@ -61,7 +60,7 @@ describe("FormSubmitPage should", () => {
     });
 
     test("mounted with the right data", async () => {
-        expect(componentInstance.state.submission.form).toEqual(formsJson[4]._id);
+        expect(componentInstance.state.submission.form).toEqual(formJson._id);
         expect(componentInstance.state.submission.fields).toEqual([]);
     });
 
@@ -71,7 +70,7 @@ describe("FormSubmitPage should", () => {
         expect(wrapper.find('Grid')).toHaveLength(1);
         expect(wrapper.find('GridRow')).toHaveLength(2);
         expect(wrapper.find('Header')).toHaveLength(1);
-        expect(wrapper.find('Header').props().children).toEqual(formsJson[4].name);
+        expect(wrapper.find('Header').props().children).toEqual(formJson.name);
         expect(wrapper.find('Form')).toHaveLength(1);
         expect(wrapper.find('FormField')).toHaveLength(4);
         expect(wrapper.find('FormButton')).toHaveLength(1);
@@ -81,7 +80,7 @@ describe("FormSubmitPage should", () => {
     test("change Field Name", async () => {
         const updateName = 'New Name';
 
-        await wrapper.find('input').first().props().onChange({target: {value: updateName}}, formsJson[4].fields[0]);
+        await wrapper.find('input').first().props().onChange({target: {value: updateName}}, formJson.fields[0]);
 
         expect(componentInstance.state.submission.fields[0].value).toEqual(updateName);
     });
@@ -92,7 +91,7 @@ describe("FormSubmitPage should", () => {
             }
         });
 
-        expect(componentInstance.props.history.location.pathname).toEqual('/forms/' + formsJson[4].id + '/submissions');
+        expect(componentInstance.props.history.location.pathname).toEqual('/forms/' + formJson.id + '/submissions');
     });
 
 });

@@ -19,6 +19,8 @@ jest.mock("../storage/forms");
 describe("FormSubmissionsPage should", () => {
     let wrapper = null;
     let componentInstance = null;
+    let submissionsFromJson = submissionsJson.data;
+    let formJson = formsJson.data[7];
     const path = '/form';
     const history = createMemoryHistory({
         initialEntries: [path],
@@ -31,7 +33,7 @@ describe("FormSubmissionsPage should", () => {
         location: {
             pathname: path,
             state: {
-                form: formsJson[7]
+                form: formJson
             }
         },
         match: {
@@ -57,7 +59,7 @@ describe("FormSubmissionsPage should", () => {
     });
 
     test("mounted with the right data", async () => {
-        expect(componentInstance.state.submissions.length).toEqual(submissionsJson.length);
+        expect(componentInstance.state.submissions.length).toEqual(submissionsFromJson.length);
     });
 
     test("render with table", async () => {
@@ -69,11 +71,11 @@ describe("FormSubmissionsPage should", () => {
         expect(wrapper.find('Table')).toHaveLength(1);
         expect(wrapper.find('TableHeader')).toHaveLength(1);
         expect(wrapper.find('TableHeaderCell')).toHaveLength(3);
-        expect(wrapper.find('TableHeaderCell').at(0).props().children).toEqual(formsJson[7].fields[0].label);
-        expect(wrapper.find('TableHeaderCell').at(1).props().children).toEqual(formsJson[7].fields[1].label);
-        expect(wrapper.find('TableHeaderCell').at(2).props().children).toEqual(formsJson[7].fields[2].label);
-        expect(wrapper.find('TableRow')).toHaveLength(1 + submissionsJson.length);
-        expect(wrapper.find('TableCell')).toHaveLength(3 * submissionsJson.length + 3);
+        expect(wrapper.find('TableHeaderCell').at(0).props().children).toEqual(formJson.fields[0].label);
+        expect(wrapper.find('TableHeaderCell').at(1).props().children).toEqual(formJson.fields[1].label);
+        expect(wrapper.find('TableHeaderCell').at(2).props().children).toEqual(formJson.fields[2].label);
+        expect(wrapper.find('TableRow')).toHaveLength(1 + submissionsFromJson.length);
+        expect(wrapper.find('TableCell')).toHaveLength(3 * submissionsFromJson.length + 3);
     });
 
 });
