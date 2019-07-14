@@ -27,6 +27,7 @@ exports.buttons = {
     SUBMIT_FORM: "Submit",
     CANCEL: "Cancel",
     CLEAR: "Clear",
+    BACK_TO_FORMS_LISTS: "Go To Forms List",
 };
 
 exports.server = {

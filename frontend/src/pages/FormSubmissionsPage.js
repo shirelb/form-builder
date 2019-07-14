@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {Helmet} from "react-helmet";
-import {Container, Header, Table} from "semantic-ui-react";
+import {Button, Container, Header, Message, Table} from "semantic-ui-react";
 import constants from "../shared/constants";
 import submissionsStorage from "../storage/submissions";
+import {Link} from "react-router-dom";
+import formsStorage from "../storage/forms";
 
 export default class FormSubmissionsPage extends Component {
     constructor(props) {
@@ -10,6 +12,10 @@ export default class FormSubmissionsPage extends Component {
 
         this.state = {
             submissions: [],
+
+            showError: false,
+            errorHeader: '',
+            errorContent: '',
         };
     }
 
@@ -18,21 +24,49 @@ export default class FormSubmissionsPage extends Component {
     }
 
     loadSubmissions = () => {
-        if (this.props.location.state)
-            submissionsStorage.getFormSubmissions(this.props.location.state.form.id)
-                .then(submissions => {
-                    this.setState({submissions})
+        if (this.props.location.state) {
+            if (this.props.location.state.form)
+                submissionsStorage.getFormSubmissions(this.props.location.state.form.id)
+                    .then(response => {
+                        if (response.success) {
+                            let submissions = response.data;
+                            this.setState({submissions, form: this.props.location.state.form})
+                        } else
+                            this.showErrorMessage('Error getting submissions', response.error);
+                    });
+        } else {
+            formsStorage.getFormById(this.props.match.params.formId)
+                .then(response => {
+                    if (response.success) {
+                        let formRes = response.data;
+                        this.setState({
+                            form: formRes
+                        });
+                    } else
+                        this.showErrorMessage('Error getting form', response.error);
                 });
-        else
             submissionsStorage.getFormSubmissions(this.props.match.params.formId)
-                .then(submissions => {
-                    this.setState({submissions})
+                .then(response => {
+                    if (response.success) {
+                        let submissions = response.data;
+                        this.setState({submissions})
+                    } else
+                        this.showErrorMessage('Error getting submissions', response.error);
                 })
+        }
     };
 
+    showErrorMessage = (errorHeader, errorMsg) => {
+        this.setState({
+            showError: true,
+            errorHeader: errorHeader,
+            errorContent: errorMsg,
+        })
+    };
+
+
     render() {
-        const {form} = this.props.location.state;
-        const {submissions} = this.state;
+        const {form, submissions, showError, errorHeader, errorContent} = this.state;
 
         return (
             <div className="FormsListPage">
@@ -43,30 +77,47 @@ export default class FormSubmissionsPage extends Component {
                 <Container>
                     <Header as="h1">{constants.titles.FORM_SUBMISSIONS_PAGE_TITLE}</Header>
 
-                    <Table celled striped selectable sortable textAlign='center'>
-                        <Table.Header>
-                            <Table.Row>
-                                {form.fields.sort((field1, field2) => field1.id - field2.id).map(field =>
-                                    (
-                                        <Table.HeaderCell key={field.id} singleLine>{field.label}</Table.HeaderCell>
-                                    )
-                                )}
-                            </Table.Row>
-                        </Table.Header>
+                    {showError ?
+                        <div>
+                            <Message
+                                style={{marginTop: 20}}
+                                error
+                                header={errorHeader}
+                                content={errorContent}
+                            />
+                            <Link to={{pathname: constants.routs.FORM_LIST_PAGE}}>
+                                <Button positive>{constants.buttons.BACK_TO_FORMS_LISTS}</Button>
+                            </Link>
+                        </div>
+                        :
+                        form ?
+                            <Table celled striped selectable sortable textAlign='center'>
+                                <Table.Header>
+                                    <Table.Row>
+                                        {form.fields.sort((field1, field2) => field1.id - field2.id).map(field =>
+                                            (
+                                                <Table.HeaderCell key={field.id}
+                                                                  singleLine>{field.label}</Table.HeaderCell>
+                                            )
+                                        )}
+                                    </Table.Row>
+                                </Table.Header>
 
-                        <Table.Body>
-                            {submissions.map(submission =>
-                                (<Table.Row key={submission.id}>
-                                    {submission.fields ?
-                                        submission.fields.sort((field1, field2) => field1.id - field2.id).map(field =>
-                                            (<Table.Cell key={field.id} singleLine> {field.value} </Table.Cell>)
-                                        )
-                                        : null
-                                    }
-                                </Table.Row>)
-                            )}
-                        </Table.Body>
-                    </Table>
+                                <Table.Body>
+                                    {submissions.map(submission =>
+                                        (<Table.Row key={submission.id}>
+                                            {submission.fields ?
+                                                submission.fields.sort((field1, field2) => field1.id - field2.id).map(field =>
+                                                    (<Table.Cell key={field.id} singleLine> {field.value} </Table.Cell>)
+                                                )
+                                                : null
+                                            }
+                                        </Table.Row>)
+                                    )}
+                                </Table.Body>
+                            </Table>
+                            : null
+                    }
                 </Container>
             </div>
         );

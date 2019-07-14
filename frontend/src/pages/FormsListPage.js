@@ -22,8 +22,8 @@ export default class FormsListPage extends Component {
 
     loadForms = () => {
         formsStorage.getForms()
-            .then(forms => {
-                this.setState({forms});
+            .then(response => {
+                this.setState({forms: response.data});
             })
     };
 

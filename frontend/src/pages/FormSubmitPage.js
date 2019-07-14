@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import submissionsStorage from "../storage/submissions";
 import formsStorage from "../storage/forms";
 import {Helmet} from "react-helmet";
-import {Form, Grid, Header} from "semantic-ui-react";
+import {Button, Form, Grid, Header, Message} from "semantic-ui-react";
 import constants from '../shared/constants';
+import {Link} from "react-router-dom";
 
 export default class FormSubmitPage extends Component {
     constructor(props) {
@@ -12,7 +13,11 @@ export default class FormSubmitPage extends Component {
         this.state = {
             submission: {
                 form: null,
-                fields: []
+                fields: [],
+
+                showError: false,
+                errorHeader: '',
+                errorContent: '',
             },
         };
     }
@@ -22,25 +27,38 @@ export default class FormSubmitPage extends Component {
     }
 
     loadForm = () => {
-        if (this.props.location.state)
-            this.setState({
-                submission: {
-                    form: this.props.location.state.form._id,
-                    fields: []
-                },
-                form: this.props.location.state.form
-            });
-        else
+        if (this.props.location.state) {
+            if (this.props.location.state.form)
+                this.setState({
+                    submission: {
+                        form: this.props.location.state.form._id,
+                        fields: []
+                    },
+                    form: this.props.location.state.form
+                });
+        } else
             formsStorage.getFormById(this.props.match.params.formId)
-                .then(form => {
-                    this.setState({
-                        submission: {
-                            form: form._id,
-                            fields: []
-                        },
-                        form: form
-                    });
+                .then(response => {
+                    if (response.success) {
+                        let formRes = response.data;
+                        this.setState({
+                            submission: {
+                                form: formRes._id,
+                                fields: []
+                            },
+                            form: formRes
+                        });
+                    } else
+                        this.showErrorMessage('Error getting form', response.error);
                 })
+    };
+
+    showErrorMessage = (errorHeader, errorMsg) => {
+        this.setState({
+            showError: true,
+            errorHeader: errorHeader,
+            errorContent: errorMsg,
+        })
     };
 
     handleChange = (e, formField) => {
@@ -60,14 +78,17 @@ export default class FormSubmitPage extends Component {
 
         submissionsStorage.submitForm(form.id, submission)
             .then(response => {
-                this.props.history.push(`/forms/${form.id}/submissions`, {
-                    form: form,
-                })
+                if (response.success)
+                    this.props.history.push(`/forms/${form.id}/submissions`, {
+                        form: form,
+                    });
+                else
+                    this.showErrorMessage('Error submitting', response.error);
             })
     };
 
     render() {
-        const {form} = this.props.location.state;
+        const {form, showError, errorHeader, errorContent} = this.state;
 
         return (
             <div className="FormBuilderPage">
@@ -76,30 +97,49 @@ export default class FormSubmitPage extends Component {
                     <title>Form Builder | Form Submit</title>
                 </Helmet>
 
-                <Grid columns='equal' padded centered textAlign='center'>
-                    <Grid.Row>
-                        <Header as="h1" textAlign={'right'}>
-                            {form.name}
+                {showError ?
+                    <div>
+                        <Header as="h1">
+                            Form Submit
                         </Header>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Form onSubmit={this.handleSubmitForm}>
-                            {form.fields.sort((field1, field2) => field1.id - field2.id).map((field) =>
-                                (
-                                    <Form.Field inline name={field.name} key={field.id}>
-                                        <label>{field.label}</label>
-                                        <input placeholder={field.label} name={field.name} type={field.type}
-                                               onChange={(e) => this.handleChange(e, field)}
-                                               style={{width: 200}}/>
-                                    </Form.Field>
-                                )
-                            )}
+                        <Message
+                            style={{marginTop: 20}}
+                            error
+                            header={errorHeader}
+                            content={errorContent}
+                        />
+                        <Link to={{pathname: constants.routs.FORM_LIST_PAGE}}>
+                            <Button positive>{constants.buttons.BACK_TO_FORMS_LISTS}</Button>
+                        </Link>
+                    </div>
+                    :
+                    form ?
+                        <Grid columns='equal' padded centered textAlign='center'>
+                            <Grid.Row>
+                                <Header as="h1" textAlign={'right'}>
+                                    {form.name}
+                                </Header>
+                            </Grid.Row>
+                            <Grid.Row>
+                                <Form onSubmit={this.handleSubmitForm}>
+                                    {form.fields.sort((field1, field2) => field1.id - field2.id).map((field) =>
+                                        (
+                                            <Form.Field inline name={field.name} key={field.id}>
+                                                <label>{field.label}</label>
+                                                <input placeholder={field.label} name={field.name} type={field.type}
+                                                       onChange={(e) => this.handleChange(e, field)}
+                                                       style={{width: 200}}/>
+                                            </Form.Field>
+                                        )
+                                    )}
 
-                            <Form.Button type='submit' positive
-                                         disabled={form.fields.length === 0}>{constants.buttons.SUBMIT_FORM}</Form.Button>
-                        </Form>
-                    </Grid.Row>
-                </Grid>
+                                    <Form.Button type='submit' positive
+                                                 disabled={form.fields.length === 0}>{constants.buttons.SUBMIT_FORM}</Form.Button>
+                                </Form>
+                            </Grid.Row>
+                        </Grid>
+                        : null
+                }
             </div>
         )
     }

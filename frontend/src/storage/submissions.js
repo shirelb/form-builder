@@ -7,12 +7,12 @@ const submitForm = (formId, submission) => {
         submission
     )
         .then(response => {
-            return response.data.data;
+            return response.data;
         })
         .catch(error => {
             console.log('post form error ', error);
-            return error;
-        });
+            return error.response.data;
+            });
 };
 
 const getFormSubmissions = (formId) => {
@@ -20,12 +20,12 @@ const getFormSubmissions = (formId) => {
         {}
     )
         .then(response => {
-            return response.data.data;
+            return response.data;
         })
         .catch(error => {
             console.log('post form error ', error);
-            return error;
-        });
+            return error.response.data;
+            });
 };
 
 export default {submitForm, getFormSubmissions}
