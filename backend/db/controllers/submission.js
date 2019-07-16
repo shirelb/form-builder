@@ -18,3 +18,6 @@ exports.deleteAll = () => {
     Submission.deleteMany({}, function (err) {
     })
 };
+
+exports.verifyCaptcha = (recaptchaResponse) => {
+};

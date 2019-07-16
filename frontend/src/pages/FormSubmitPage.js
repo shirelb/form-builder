@@ -6,6 +6,8 @@ import {Button, Form, Grid, Header, Message} from "semantic-ui-react";
 import constants from '../shared/constants';
 import {Link} from "react-router-dom";
 
+const globalName = "grecaptcha";
+
 export default class FormSubmitPage extends Component {
     constructor(props) {
         super(props);
@@ -13,6 +15,7 @@ export default class FormSubmitPage extends Component {
         this.state = {
             submission: {
                 form: null,
+                recaptchaResponse: null,
                 fields: [],
 
                 showError: false,
@@ -65,7 +68,13 @@ export default class FormSubmitPage extends Component {
         const {value} = e.target;
         const {submission} = this.state;
 
-        this.setState({formError: false, formErrorHeader: '', formErrorContent: '', formComplete: false});
+        this.setState({
+            formError: false,
+            formErrorHeader: '',
+            formErrorContent: '',
+            formComplete: false,
+            showLabel: false
+        });
 
         let fields = submission.fields;
         fields[formField.id] = {id: formField.id, value: value};
@@ -76,19 +85,27 @@ export default class FormSubmitPage extends Component {
         const {form} = this.state;
         const {submission} = this.state;
 
-        submissionsStorage.submitForm(form.id, submission)
-            .then(response => {
-                if (response.success)
-                    this.props.history.push(`/forms/${form.id}/submissions`, {
-                        form: form,
-                    });
-                else
-                    this.showErrorMessage('Error submitting', response.error);
-            })
+        this.setState({showLabel: false});
+
+        if (document.getElementById("recaptchaResponse").value !== null && document.getElementById("recaptchaResponse").value !== '') {
+            submission.recaptchaResponse = document.getElementById("recaptchaResponse").value;
+
+            submissionsStorage.submitForm(form.id, submission)
+                .then(response => {
+                    if (response.success)
+                        this.props.history.push(`/forms/${form.id}/submissions`, {
+                            form: form,
+                        });
+                    else
+                        this.showErrorMessage('Error submitting', response.error);
+                })
+        } else {
+            this.setState({showLabel: true})
+        }
     };
 
     render() {
-        const {form, showError, errorHeader, errorContent} = this.state;
+        const {form, showError, showLabel, errorHeader, errorContent} = this.state;
 
         return (
             <div className="FormBuilderPage">
@@ -132,6 +149,19 @@ export default class FormSubmitPage extends Component {
                                             </Form.Field>
                                         )
                                     )}
+
+                                    <Form.Field inline hidden name="recaptchaResponse">
+                                        <input type='text' id='recaptchaResponse'/>
+                                    </Form.Field>
+
+                                    <div
+                                        id="captcha_element"
+                                    />
+
+                                    {showLabel ?
+                                        <label style={{color: 'red'}}>dont forget the captcha</label>
+                                        : null
+                                    }
 
                                     <Form.Button type='submit' positive
                                                  disabled={form.fields.length === 0}>{constants.buttons.SUBMIT_FORM}</Form.Button>
