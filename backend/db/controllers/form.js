@@ -43,6 +43,10 @@ exports.findOne = (formId) => {
         })
 };
 
+exports.deleteById = (formId) => {
+    return Form.deleteOne({id: formId})
+};
+
 exports.findByDocId = (formId) => {
     return Form.findById(formId)
         .then(form => {

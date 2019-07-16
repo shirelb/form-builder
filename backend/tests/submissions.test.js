@@ -112,4 +112,32 @@ describe('submissions route should', function () {
             });
     });
 
+    step('DELETE a submission for form ' + formId, (done) => {
+        submissionJson.form = formDocId;
+        chai.request(server)
+            .delete(`/api/forms/${formId}/submissions/0`)
+            .send(submissionJson)
+            .end((err, res) => {
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.a('object');
+                expect(res.body.success).to.be.true;
+                expect(res.body.data).to.be.a('array');
+                expect(res.body.data.length).to.be.eql(0);
+                done();
+            });
+    });
+
+    step('GET zero submissions for form ' + formId, (done) => {
+        chai.request(server)
+            .get(`/api/forms/${formId}/submissions`)
+            .end((err, res) => {
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.a('object');
+                expect(res.body.success).to.be.true;
+                expect(res.body.data).to.be.a('array');
+                expect(res.body.data.length).to.be.eql(0);
+                done();
+            });
+    });
+
 });

@@ -68,14 +68,14 @@ describe("FormsListPage should", () => {
         expect(wrapper.find('Link').first().find('Button').props().children).toEqual(constants.buttons.ADD_FORM);
         expect(wrapper.find('Table')).toHaveLength(1);
         expect(wrapper.find('TableHeader')).toHaveLength(1);
-        expect(wrapper.find('TableHeaderCell')).toHaveLength(5);
-        expect(wrapper.find('TableHeaderCell').at(0).props().children).toEqual(constants.headers.FORM_ID_HEADER);
-        expect(wrapper.find('TableHeaderCell').at(1).props().children).toEqual(constants.headers.FORM_NAME_HEADER);
-        expect(wrapper.find('TableHeaderCell').at(2).props().children).toEqual(constants.headers.FORM_SUBMISSIONS_NUM_HEADER);
-        expect(wrapper.find('TableHeaderCell').at(3).props().children).toEqual(constants.headers.FORM_SUBMIT_PAGE_HEADER);
-        expect(wrapper.find('TableHeaderCell').at(4).props().children).toEqual(constants.headers.FORM_SUBMISSIONS_PAGE_HEADER);
+        expect(wrapper.find('TableHeaderCell')).toHaveLength(6);
+        expect(wrapper.find('TableHeaderCell').at(1).props().children).toEqual(constants.headers.FORM_ID_HEADER);
+        expect(wrapper.find('TableHeaderCell').at(2).props().children).toEqual(constants.headers.FORM_NAME_HEADER);
+        expect(wrapper.find('TableHeaderCell').at(3).props().children).toEqual(constants.headers.FORM_SUBMISSIONS_NUM_HEADER);
+        expect(wrapper.find('TableHeaderCell').at(4).props().children).toEqual(constants.headers.FORM_SUBMIT_PAGE_HEADER);
+        expect(wrapper.find('TableHeaderCell').at(5).props().children).toEqual(constants.headers.FORM_SUBMISSIONS_PAGE_HEADER);
         expect(wrapper.find('TableRow')).toHaveLength(1 + formsFormRes.length);
-        expect(wrapper.find('TableCell')).toHaveLength(5 * formsFormRes.length + 5);
+        expect(wrapper.find('TableCell')).toHaveLength(6 * formsFormRes.length + 6);
     });
 
     test("open builder page on button click", async () => {

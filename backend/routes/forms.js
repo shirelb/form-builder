@@ -41,6 +41,31 @@ router.post('/build', function (req, res, next) {
         });
 });
 
+router.delete('/:formId', function (req, res, next) {
+    formStorage.deleteById(req.params.formId)
+        .then(response => {
+            if (response.deletedCount > 0 && response.ok > 0) {
+                formStorage.findAll()
+                    .then(forms => {
+                        return res.json({success: true, data: forms});
+                    })
+                    .catch(err => {
+                        if (err.name === 'ValidationError')
+                            return res.status(400).json({success: false, error: err});
+                        return res.status(500).json({success: false, error: err});
+                    });
+            } else
+                return res.status(500).json({success: false});
+        })
+        .catch(err => {
+            if (err.name === 'ValidationError')
+                return res.status(400).json({success: false, error: err});
+            if (err.name === 'ReferenceError')
+                return res.status(404).json({success: false, error: "Form not found with id " + req.params.formId});
+            return res.status(500).json({success: false, error: err});
+        });
+});
+
 router.use('/:formId/submissions', submissionsRouter);
 
 module.exports = router;

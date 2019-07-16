@@ -27,6 +27,19 @@ const getFormById = (formId) => {
         });
 };
 
+const deleteForm = (formId) => {
+    return axios.delete(`${server.URL}/api/forms/${formId}`,
+        {}
+    )
+        .then(response => {
+            return response.data;
+        })
+        .catch(error => {
+            console.log('delete form by id error ', error);
+            return error.response.data;
+        });
+};
+
 const saveForm = (form) => {
     return axios.post(`${server.URL}/api/forms/build`,
         form
@@ -40,4 +53,4 @@ const saveForm = (form) => {
         });
 };
 
-export default {getForms, saveForm,getFormById}
+export default {getForms, saveForm, getFormById, deleteForm}

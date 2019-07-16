@@ -12,7 +12,7 @@ const submitForm = (formId, submission) => {
         .catch(error => {
             console.log('post form error ', error);
             return error.response.data;
-            });
+        });
 };
 
 const getFormSubmissions = (formId) => {
@@ -25,7 +25,20 @@ const getFormSubmissions = (formId) => {
         .catch(error => {
             console.log('post form error ', error);
             return error.response.data;
-            });
+        });
 };
 
-export default {submitForm, getFormSubmissions}
+const deleteSubmission = (formId, submissionId) => {
+    return axios.delete(`${server.URL}/api/forms/${formId}/submissions/${submissionId}`,
+        {}
+    )
+        .then(response => {
+            return response.data;
+        })
+        .catch(error => {
+            console.log('delete submission by id error ', error);
+            return error.response.data;
+        });
+};
+
+export default {submitForm, getFormSubmissions, deleteSubmission}

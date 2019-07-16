@@ -70,12 +70,12 @@ describe("FormSubmissionsPage should", () => {
         expect(wrapper.find('Header').get(0).props.children).toEqual(constants.titles.FORM_SUBMISSIONS_PAGE_TITLE);
         expect(wrapper.find('Table')).toHaveLength(1);
         expect(wrapper.find('TableHeader')).toHaveLength(1);
-        expect(wrapper.find('TableHeaderCell')).toHaveLength(3);
-        expect(wrapper.find('TableHeaderCell').at(0).props().children).toEqual(formJson.fields[0].label);
-        expect(wrapper.find('TableHeaderCell').at(1).props().children).toEqual(formJson.fields[1].label);
-        expect(wrapper.find('TableHeaderCell').at(2).props().children).toEqual(formJson.fields[2].label);
+        expect(wrapper.find('TableHeaderCell')).toHaveLength(4);
+        expect(wrapper.find('TableHeaderCell').at(1).props().children).toEqual(formJson.fields[0].label);
+        expect(wrapper.find('TableHeaderCell').at(2).props().children).toEqual(formJson.fields[1].label);
+        expect(wrapper.find('TableHeaderCell').at(3).props().children).toEqual(formJson.fields[2].label);
         expect(wrapper.find('TableRow')).toHaveLength(1 + submissionsFromJson.length);
-        expect(wrapper.find('TableCell')).toHaveLength(3 * submissionsFromJson.length + 3);
+        expect(wrapper.find('TableCell')).toHaveLength(4 * submissionsFromJson.length + 4);
     });
 
 });

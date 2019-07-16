@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Helmet} from "react-helmet";
-import {Button, Container, Header, Message, Table} from "semantic-ui-react";
+import {Button, Container, Header, Icon, Message, Table} from "semantic-ui-react";
 import constants from "../shared/constants";
 import submissionsStorage from "../storage/submissions";
 import {Link} from "react-router-dom";
@@ -64,6 +64,12 @@ export default class FormSubmissionsPage extends Component {
         })
     };
 
+    deleteSubmission = (submission) => {
+        submissionsStorage.deleteSubmission(this.state.form.id, submission.id)
+            .then(response => {
+                this.setState({submissions: response.data});
+            })
+    };
 
     render() {
         const {form, submissions, showError, errorHeader, errorContent} = this.state;
@@ -94,6 +100,7 @@ export default class FormSubmissionsPage extends Component {
                             <Table celled striped selectable sortable textAlign='center'>
                                 <Table.Header>
                                     <Table.Row>
+                                        <Table.HeaderCell singleLine/>
                                         {form.fields.sort((field1, field2) => field1.id - field2.id).map(field =>
                                             (
                                                 <Table.HeaderCell key={field.id}
@@ -106,6 +113,10 @@ export default class FormSubmissionsPage extends Component {
                                 <Table.Body>
                                     {submissions.map(submission =>
                                         (<Table.Row key={submission.id}>
+                                            <Table.Cell singleLine>
+                                                <Icon name={'delete'}
+                                                      onClick={this.deleteSubmission.bind(this, submission)}/>
+                                            </Table.Cell>
                                             {submission.fields ?
                                                 submission.fields.sort((field1, field2) => field1.id - field2.id).map(field =>
                                                     (<Table.Cell key={field.id} singleLine> {field.value} </Table.Cell>)

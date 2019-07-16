@@ -14,6 +14,10 @@ exports.findByFormId = async (formId) => {
         });
 };
 
+exports.deleteById = (submissionId) => {
+    return Submission.deleteOne({id: submissionId})
+};
+
 exports.deleteAll = () => {
     Submission.deleteMany({}, function (err) {
     })

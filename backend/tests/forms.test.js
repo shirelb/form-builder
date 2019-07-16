@@ -189,4 +189,30 @@ describe('forms route should', function () {
             });
     });
 
+    step('DELETE form with id 0', (done) => {
+        chai.request(server)
+            .delete('/api/forms/0')
+            .end((err, res) => {
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.a('object');
+                expect(res.body.success).to.be.true;
+                expect(res.body.data).to.be.a('array');
+                expect(res.body.data.length).to.be.eql(0);
+                done();
+            });
+    });
+
+    step('GET array with 0 form', (done) => {
+        chai.request(server)
+            .get('/api/forms')
+            .end((err, res) => {
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.a('object');
+                expect(res.body.success).to.be.true;
+                expect(res.body.data).to.be.a('array');
+                expect(res.body.data.length).to.be.eql(0);
+                done();
+            });
+    });
+
 });

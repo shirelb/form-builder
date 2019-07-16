@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Helmet} from "react-helmet";
-import {Button, Container, Header, Table} from "semantic-ui-react";
+import {Button, Container, Header, Icon, Table} from "semantic-ui-react";
 import constants from '../shared/constants';
 import formsStorage from '../storage/forms';
 import {Link} from "react-router-dom";
@@ -27,6 +27,13 @@ export default class FormsListPage extends Component {
             })
     };
 
+    deleteForm = (form) => {
+        formsStorage.deleteForm(form.id)
+            .then(response => {
+                this.setState({forms: response.data});
+            })
+    };
+
     render() {
         const {forms} = this.state;
 
@@ -46,6 +53,7 @@ export default class FormsListPage extends Component {
                     <Table celled striped selectable sortable textAlign='center'>
                         <Table.Header>
                             <Table.Row>
+                                <Table.HeaderCell singleLine/>
                                 <Table.HeaderCell singleLine>{constants.headers.FORM_ID_HEADER}</Table.HeaderCell>
                                 <Table.HeaderCell>{constants.headers.FORM_NAME_HEADER}</Table.HeaderCell>
                                 <Table.HeaderCell>{constants.headers.FORM_SUBMISSIONS_NUM_HEADER}</Table.HeaderCell>
@@ -57,6 +65,10 @@ export default class FormsListPage extends Component {
                         <Table.Body>
                             {forms.map(form =>
                                 (<Table.Row key={form.id}>
+                                    <Table.Cell singleLine>
+                                        <Icon name={'delete'}
+                                              onClick={this.deleteForm.bind(this, form)}/>
+                                    </Table.Cell>
                                     <Table.Cell singleLine> {form.id} </Table.Cell>
                                     <Table.Cell singleLine>
                                         <Header as='h3' textAlign='center'>
